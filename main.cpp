@@ -1,14 +1,14 @@
 #include <iostream>
-#include <SDL2/SDL.h>
+#include "SDL2/Headers/SDL.h"
 #include "player.h"
 #include <sstream>
 
 using namespace std;
 
-int WinMain() {
+int main() {
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window *win = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
-    SDL_Renderer *renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Renderer *renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_PRESENTVSYNC);
     SDL_Event event;
     SDL_KeyboardEvent keyboard_event;
     Player player;
@@ -47,6 +47,7 @@ int WinMain() {
         player.calculate_input();
 
         // Moving
+        player.apply_gravity();
         player.move();
 
         // Render
@@ -66,8 +67,12 @@ int WinMain() {
         if (frame_time == 0) {
             frame_time = 1;
         }
+        auto frames = 1000 / frame_time;
+        if (frames > fps) {
+            frames = fps;
+        }
         stringstream title_ss;
-        title_ss << 1000 / frame_time;
+        title_ss << frames;
         SDL_SetWindowTitle(win, title_ss.str().c_str());
     }
 

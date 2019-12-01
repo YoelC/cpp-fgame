@@ -1,6 +1,7 @@
 #include <iostream>
+#include "physics_cube.h"
 
-class Player {
+class Player: public PhysicsCube {
 public:
     double x, y, width, height;
     double x_vel, y_vel;
@@ -23,4 +24,5 @@ public:
 
     void reset_variables();
 
+    void apply_gravity();
 };

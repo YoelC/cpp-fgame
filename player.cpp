@@ -1,5 +1,5 @@
 #include <iostream>
-#include <SDL2/SDL.h>
+#include "SDL2/Headers/SDL.h"
 #include "player.h"
 
 
@@ -55,6 +55,10 @@ void Player::calculate_input() {
     }
 }
 
+void Player::apply_gravity() {
+    y_vel += 0.3;
+}
+
 void Player::move() {
     x += x_vel;
     y += y_vel;
@@ -69,10 +73,10 @@ void Player::reset_variables() {
 
 SDL_Rect Player::get_rect() {
     SDL_Rect r;
-    r.x = x;
-    r.y = y;
-    r.w = width;
-    r.h = height;
+    r.x = floor(x);
+    r.y = floor(y);
+    r.w = floor(width);
+    r.h = floor(height);
     return r;
 }
 
@@ -81,5 +85,4 @@ void Player::draw(SDL_Renderer *renderer) {
 
     SDL_Rect rect = get_rect();
     SDL_RenderFillRect(renderer, &rect);
-
 }
